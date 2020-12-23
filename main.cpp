@@ -3,6 +3,30 @@
 #include <math.h>
 #include <string.h>
 
+char* noprobels(char *s)
+{
+    char *p=strtok(s," ");
+    char *sn;
+    sn=(char*) malloc(40*sizeof(char));
+    strcpy(sn,p);
+    while (p != NULL)
+    {
+        p=strtok(NULL," ");
+        if(p != NULL)
+        {
+            if(*p=='.')
+            {
+                strcat(sn,p);
+            }
+            else
+            {
+                strcat(sn," ");
+                strcat(sn,p);
+            }
+        }
+    }
+    return sn;
+}
 char* norepeats(char *s)
 {
     char s1[60], lw[60], *sn;
@@ -111,7 +135,7 @@ char* task(char *s)
 }
 int main()
 {
-    char s[60],sn[60],f[60],F[60];
+    char s[60],s1[60],sn[60],f[60],F[60];
     printf("Введите имя файла для чтения\n");
     gets(f);
     printf("Введите имя файла для записи\n");
@@ -130,6 +154,13 @@ int main()
     }
     fread(s,sizeof(char),60,fp);
     printf("Вот исходная строка:%s",s);
+    strcpy(s1,s);
+    strcpy(sn,noprobels(s));
+    fwrite(strcat(sn,"\n"),sizeof(char),strlen(sn)+1,FP);
+    strcpy(s,s1);
+    strcpy(sn,norepeats(s));
+    fwrite(strcat(sn,"\n"),sizeof(char),strlen(sn)+1,FP);
+    strcpy(s,s1);
     strcpy(sn,task(s));
     fwrite(sn,sizeof(char),strlen(sn),FP);
     fclose(fp);
